@@ -1,0 +1,299 @@
+/* ============================================================
+   INM320 Assignment 5 - Purity UI Dashboard
+   custom styles & bootstrap overrides (mobile first)
+   ============================================================ */
+
+
+/* ---------- variables ---------- */
+
+/* colors from figma design */
+$teal: #4fd1c5;
+$teal-dark: #38b2a8;
+$purple: #9b59b6;
+
+$white: #fff;
+$black: #000;
+
+$body-bg: #f8f9fa;
+$text-main: #677791;
+$text-muted-light: #a0a8b8;
+$track-bg: #e9ecef;
+$row-border: #f2f2f2;
+
+/* fonts */
+$font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* shadows */
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+/* spacing & sizing */
+$radius-sm: 8px;
+$radius-lg: 12px;
+
+$icon-box: 48px;
+$icon-mini-box: 28px;
+$nav-icon-box: 30px;
+
+$avatar-size: 24px;
+$avatar-overlap: 8px;
+
+$company-logo-size: 20px;
+
+$timeline-icon-size: 24px;
+$timeline-line-width: 2px;
+$timeline-gap: 12px;
+
+/* progress bar heights */
+$progress-thin-height: 4px;
+$progress-mid-height: 6px;
+
+
+/* ---------- mixins ---------- */
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* teal gradient square icon (stat cards & active users) */
+@mixin icon-box($size, $radius: $radius-sm) {
+    @include flex-center;
+    width: $size;
+    height: $size;
+    border-radius: $radius;
+    background: linear-gradient(135deg, $teal, $teal-dark);
+    color: $white;
+    flex-shrink: 0;
+}
+
+
+/* ---------- base ---------- */
+
+body {
+    background-color: $body-bg;
+    color: $text-main;
+    font-family: $font-main;
+    font-weight: 700;
+}
+
+/* lighter gray for all muted text (bootstrap default is too dark) */
+.text-muted {
+    color: $text-muted-light !important;
+}
+
+
+/* ---------- sidebar ---------- */
+
+.sidebar {
+    /* icon badge: white rounded square behind every menu icon */
+    .nav-icon {
+        @include flex-center;
+        width: $nav-icon-box;
+        height: $nav-icon-box;
+        border-radius: $radius-sm;
+        background-color: $white;
+        box-shadow: $shadow-sm;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    /* icons themselves: teal like figma */
+    .nav-link i {
+        color: $teal;
+    }
+
+    /* active menu item: white pill + black bold text like figma */
+    .active-side {
+        background-color: $white;
+        color: $black;
+        font-weight: 700;
+        box-shadow: $shadow-md;
+
+        /* active icon badge turns teal with white icon */
+        .nav-icon {
+            background-color: $teal;
+
+            i {
+                color: $white;
+            }
+        }
+    }
+}
+
+
+/* ---------- stat cards ---------- */
+
+.stat-icon {
+    @include icon-box($icon-box, $radius-lg);
+}
+
+
+/* ---------- progress bars ---------- */
+
+/* thin (projects table) */
+.progress-thin {
+    height: $progress-thin-height;
+}
+
+/* medium (active users stats) */
+.progress-mid {
+    height: $progress-mid-height;
+    border-radius: $progress-mid-height / 2;
+    background-color: $track-bg;
+}
+
+/* widths (bootstrap only has w-25/50/75/100) */
+.w-10 { width: 10%; }
+.w-40 { width: 40%; }
+.w-45 { width: 45%; }
+.w-60 { width: 60%; }
+.w-70 { width: 70%; }
+.w-80 { width: 80%; }
+
+.bar-teal {
+    background-color: $teal;
+}
+
+
+/* ---------- sales overview chart ---------- */
+
+.chart-card {
+    .card-body {
+        display: flex;
+        flex-direction: column;
+
+        img {
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+    }
+}
+
+/* chart image fills the card body, shown fully */
+.chart-fill {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/* ---------- projects table ---------- */
+
+.projects-table {
+    /* small uppercase header labels */
+    .thead-small th {
+        font-size: 12px;
+        color: $text-muted-light;
+        font-weight: 700;
+    }
+
+    /* light row separators like figma */
+    tbody tr {
+        border-bottom: 1px solid $row-border;
+    }
+
+    /* completion percentage: teal like figma */
+    span.fw-bold {
+        color: $teal;
+    }
+
+    /* members avatars overlapping */
+    .fa-user-circle,
+    .avatar {
+        margin-left: -$avatar-overlap;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    /* real avatar images: round, small */
+    .avatar {
+        width: $avatar-size;
+        height: $avatar-size;
+        border-radius: 50%;
+        object-fit: cover;
+        border: none;
+    }
+}
+
+/* company logos in projects table */
+.company-logo {
+    width: $company-logo-size;
+    height: $company-logo-size;
+    object-fit: contain;
+    margin-right: $timeline-gap;
+    vertical-align: middle;
+}
+
+
+/* ---------- orders timeline ---------- */
+
+.timeline-item {
+    display: flex;
+    gap: $timeline-gap;
+    position: relative;
+    padding-bottom: 20px;
+
+    /* connecting vertical line:
+       left = icon center minus half line width, so it passes through icon centers
+       top = icon bottom, bottom = end of item (next icon top) */
+    &:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        left: calc(#{$timeline-icon-size} / 2 - #{$timeline-line-width} / 2);
+        top: $timeline-icon-size;
+        bottom: 0;
+        width: $timeline-line-width;
+        background-color: $row-border;
+    }
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+
+.timeline-icon {
+    position: relative;
+    z-index: 1;
+    background: $white;
+    width: $timeline-icon-size;
+    height: $timeline-icon-size;
+    font-size: 15px;
+    line-height: $timeline-icon-size;
+    text-align: center;
+    flex-shrink: 0;
+
+    /* keep the line hidden behind the icon */
+    img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+    }
+}
+
+
+/* ---------- active users mini icons ---------- */
+
+.mini-icon {
+    @include icon-box($icon-mini-box);
+}
+
+
+/* ---------- teal primary button (modify default bootstrap design) ---------- */
+
+.btn-teal {
+    background-color: $teal;
+    border-color: $teal;
+    color: $white;
+    font-weight: 600;
+
+    &:hover,
+    &:focus {
+        background-color: $teal-dark;
+        border-color: $teal-dark;
+        color: $white;
+    }
+}
