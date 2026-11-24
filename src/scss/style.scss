@@ -9,15 +9,15 @@
 /* colors from figma design */
 $teal: #4fd1c5;
 $teal-dark: #38b2a8;
-$purple: #9b59b6;
+// for changing bootstrap default
+$green: #68d391;
+$red: #e53e3e;
 
 $white: #fff;
-$black: #000;
 
 $body-bg: #f8f9fa;
-$text-main: #677791;
-$text-muted-light: #a0a8b8;
-$track-bg: #e9ecef;
+$text-main: #2d3748;
+$text-muted-light: #a0aec0;
 $row-border: #f2f2f2;
 
 /* fonts */
@@ -28,15 +28,14 @@ $shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
 $shadow-md: 0 2px 6px rgba(0, 0, 0, 0.06);
 
 /* spacing & sizing */
-$radius-sm: 8px;
-$radius-lg: 12px;
+$radius-sm: 12px;
 
 $icon-box: 48px;
 $icon-mini-box: 28px;
 $nav-icon-box: 30px;
 
 $avatar-size: 24px;
-$avatar-overlap: 8px;
+$avatar-overlap: 12px;
 
 $company-logo-size: 20px;
 
@@ -46,7 +45,6 @@ $timeline-gap: 12px;
 
 /* progress bar heights */
 $progress-thin-height: 4px;
-$progress-mid-height: 6px;
 
 
 /* ---------- mixins ---------- */
@@ -57,12 +55,13 @@ $progress-mid-height: 6px;
     align-items: center;
 }
 
-/* teal gradient square icon (stat cards & active users) */
-@mixin icon-box($size, $radius: $radius-sm) {
+/* teal gradient square icon (stat cards & active users)
+   radius scales with size to keep the same corner ratio */
+@mixin icon-box($size, $radius-ratio: 0.25) {
     @include flex-center;
     width: $size;
     height: $size;
-    border-radius: $radius;
+    border-radius: $size * $radius-ratio;
     background: linear-gradient(135deg, $teal, $teal-dark);
     color: $white;
     flex-shrink: 0;
@@ -75,12 +74,15 @@ body {
     background-color: $body-bg;
     color: $text-main;
     font-family: $font-main;
+    font-size: 14px;
+    line-height: 1.4;
     font-weight: 700;
 }
 
-/* lighter gray for all muted text (bootstrap default is too dark) */
+/* gray text: helvetica 400 per figma spec */
 .text-muted {
     color: $text-muted-light !important;
+    font-weight: 400;
 }
 
 
@@ -107,7 +109,7 @@ body {
     /* active menu item: white pill + black bold text like figma */
     .active-side {
         background-color: $white;
-        color: $black;
+        color: $text-main;
         font-weight: 700;
         box-shadow: $shadow-md;
 
@@ -126,22 +128,15 @@ body {
 /* ---------- stat cards ---------- */
 
 .stat-icon {
-    @include icon-box($icon-box, $radius-lg);
+    @include icon-box($icon-box);
 }
 
 
 /* ---------- progress bars ---------- */
 
-/* thin (projects table) */
+/* thin (projects table & active users stats) */
 .progress-thin {
     height: $progress-thin-height;
-}
-
-/* medium (active users stats) */
-.progress-mid {
-    height: $progress-mid-height;
-    border-radius: $progress-mid-height / 2;
-    background-color: $track-bg;
 }
 
 /* widths (bootstrap only has w-25/50/75/100) */
@@ -296,4 +291,50 @@ body {
         border-color: $teal-dark;
         color: $white;
     }
+}
+
+
+/* mobile first: card keeps natural height on small screens */
+.projects-fill {
+    height: auto;
+}
+
+/* projects card: on desktop the table stretches to fill card height (matches orders card).
+   mobile keeps natural height, no scrollbars */
+@media (min-width: 992px) {
+    .projects-fill {
+        .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* wrapper grows to fill space between header and card bottom */
+        .table-responsive {
+            flex: 1 1 auto;
+            display: flex;
+            overflow: visible;
+        }
+
+        /* table takes full height; extra space is distributed to rows */
+        .table {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+
+/* lighter success green per figma*/
+.text-success {
+    color: $green !important;
+}
+
+/* red per figma (#e53e3e) */
+.text-danger {
+    color: $red !important;
+}
+
+/* desktop sidebar logo link: not the default link blue */
+.sidebar-logo {
+    color: $text-main;
 }

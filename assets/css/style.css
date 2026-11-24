@@ -9,18 +9,22 @@
 /* spacing & sizing */
 /* progress bar heights */
 /* ---------- mixins ---------- */
-/* teal gradient square icon (stat cards & active users) */
+/* teal gradient square icon (stat cards & active users)
+   radius scales with size to keep the same corner ratio */
 /* ---------- base ---------- */
 body {
   background-color: #f8f9fa;
-  color: #677791;
+  color: #2d3748;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
   font-weight: 700;
 }
 
-/* lighter gray for all muted text (bootstrap default is too dark) */
+/* gray text: helvetica 400 per figma spec */
 .text-muted {
-  color: #a0a8b8 !important;
+  color: #a0aec0 !important;
+  font-weight: 400;
 }
 
 /* ---------- sidebar ---------- */
@@ -33,7 +37,7 @@ body {
   align-items: center;
   width: 30px;
   height: 30px;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   font-size: 13px;
@@ -50,7 +54,7 @@ body {
 }
 .sidebar .active-side {
   background-color: #fff;
-  color: #000;
+  color: #2d3748;
   font-weight: 700;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   /* active icon badge turns teal with white icon */
@@ -76,16 +80,9 @@ body {
 }
 
 /* ---------- progress bars ---------- */
-/* thin (projects table) */
+/* thin (projects table & active users stats) */
 .progress-thin {
   height: 4px;
-}
-
-/* medium (active users stats) */
-.progress-mid {
-  height: 6px;
-  border-radius: 3px;
-  background-color: #e9ecef;
 }
 
 /* widths (bootstrap only has w-25/50/75/100) */
@@ -140,7 +137,7 @@ body {
 }
 .projects-table .thead-small th {
   font-size: 12px;
-  color: #a0a8b8;
+  color: #a0aec0;
   font-weight: 700;
 }
 .projects-table {
@@ -160,7 +157,7 @@ body {
 }
 .projects-table .fa-user-circle,
 .projects-table .avatar {
-  margin-left: -8px;
+  margin-left: -12px;
 }
 .projects-table .fa-user-circle:first-child,
 .projects-table .avatar:first-child {
@@ -234,7 +231,7 @@ body {
   align-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 8px;
+  border-radius: 7px;
   background: linear-gradient(135deg, #4fd1c5, #38b2a8);
   color: #fff;
   flex-shrink: 0;
@@ -251,6 +248,49 @@ body {
   background-color: #38b2a8;
   border-color: #38b2a8;
   color: #fff;
+}
+
+/* mobile first: card keeps natural height on small screens */
+.projects-fill {
+  height: auto;
+}
+
+/* projects card: on desktop the table stretches to fill card height (matches orders card).
+   mobile keeps natural height, no scrollbars */
+@media (min-width: 992px) {
+  .projects-fill .card-body {
+    display: flex;
+    flex-direction: column;
+  }
+  .projects-fill {
+    /* wrapper grows to fill space between header and card bottom */
+  }
+  .projects-fill .table-responsive {
+    flex: 1 1 auto;
+    display: flex;
+    overflow: visible;
+  }
+  .projects-fill {
+    /* table takes full height; extra space is distributed to rows */
+  }
+  .projects-fill .table {
+    width: 100%;
+    height: 100%;
+  }
+}
+/* lighter success green per figma*/
+.text-success {
+  color: #68d391 !important;
+}
+
+/* red per figma (#e53e3e) */
+.text-danger {
+  color: #e53e3e !important;
+}
+
+/* desktop sidebar logo link: not the default link blue */
+.sidebar-logo {
+  color: #2d3748;
 }
 
 /*# sourceMappingURL=style.css.map */
